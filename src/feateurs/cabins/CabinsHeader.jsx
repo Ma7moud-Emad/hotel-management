@@ -7,7 +7,7 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   @media (max-width: 950px) {
     display: flex;
     flex-direction: column;

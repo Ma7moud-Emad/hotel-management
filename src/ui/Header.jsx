@@ -6,7 +6,7 @@ import { PiMoonLight } from "react-icons/pi";
 
 const StyledHeader = styled.header`
   background-color: var(--color-gray-0);
-  padding: 0.5rem;
+  padding: 0 0.5rem;
   border-bottom: 1px solid var(--color-gray-100);
 `;
 const Ul = styled.ul`
