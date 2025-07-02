@@ -2,7 +2,7 @@
 
 A full-featured hotel management dashboard for internal use by hotel staff. This app streamlines daily operations including cabin management, bookings, guest data, check-ins, check-outs, and more — all secured behind authentication.
 
-🔗 liveDemo: https://hotel-management-dun.vercel.app/dashboard
+🔗 liveDemo: https://hotel-management-dun.vercel.app
 
 ---
 
