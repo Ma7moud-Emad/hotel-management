@@ -5,6 +5,7 @@ import styled from "styled-components";
 import toastAlert from "../../servies/alerts";
 import Spinner from "../../ui/Spinner";
 import { addCabin, updateCabin } from "../../servies/cabinsActions";
+import _ from "lodash";
 
 const Container = styled.div`
   width: 100%;
@@ -155,21 +156,17 @@ export default function CreateCabin({
   const { isPending: isUpdating, mutate: mutateUpdate } = useMutation({
     mutationFn: (newCabin) => updateCabin(newCabin),
 
-    onSuccess: (data) => {
-      if (JSON.stringify(cabinObj) === JSON.stringify(data[0])) {
-        toastAlert("info", "No modifications were made");
-      } else {
-        // msg confirm success updating
-        toastAlert("success", "Cabin updated successfully");
+    onSuccess: () => {
+      // msg confirm success updating
+      toastAlert("success", "Cabin updated successfully");
 
-        handelResetValues();
+      handelResetValues();
 
-        // reset init value of btn in form
-        setIsUpdate(false);
+      // reset init value of btn in form
+      setIsUpdate(false);
 
-        // when is new create cabin
-        setCabinObj(null);
-      }
+      // when is new create cabin
+      setCabinObj(null);
     },
 
     onError: (error) => {
@@ -179,8 +176,16 @@ export default function CreateCabin({
   });
 
   function onSubmit(data) {
+    // check if cabin is already exists
     if (cabinObj) {
-      mutateUpdate(data);
+      // check is any change cabin info before send request to update caibn info
+      if (_.isEqual(data, cabinObj)) {
+        toastAlert("info", "No modifications were made");
+      } else {
+        // when change cabin info send req to update data
+        mutateUpdate(data);
+      }
+      // when cabin isn't exists send req to create new cabin
     } else {
       mutateCreate({
         ...data,
