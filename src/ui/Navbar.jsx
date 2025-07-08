@@ -24,9 +24,8 @@ const StyledNavLink = styled(NavLink)`
     align-items: center;
     gap: 1.2rem;
     color: var(--color-gray-600);
-    font-size: 1.2rem;
     font-weight: 500;
-    padding: 1.2rem 2.4rem;
+    padding: 1.2rem 1.4rem;
     transition: all 0.3s;
     text-transform: capitalize;
   }
@@ -40,8 +39,8 @@ const StyledNavLink = styled(NavLink)`
     border-radius: var(--border-radius-sm);
   }
   & svg {
-    width: 2rem;
-    height: 2rem;
+    width: 1.8rem;
+    height: 1.8rem;
     color: var(--color-gray-400);
     transition: all 0.3s;
     @media (max-width: 768px) {
@@ -69,7 +68,7 @@ export default function Navbar() {
     <nav>
       <Logo />
       <NavList>
-        <li>
+        <li title="home">
           <StyledNavLink to="/dashboard">
             <HiOutlineHome />
             <span> home</span>
