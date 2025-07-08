@@ -1,11 +1,8 @@
-import { AiOutlineDelete } from "react-icons/ai";
-import { BsCopy } from "react-icons/bs";
-import { CiEdit } from "react-icons/ci";
 import { MdOutlineDiscount } from "react-icons/md";
 import styled from "styled-components";
-import deleteCabin from "../../servies/deleteCabins";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Bounce, toast } from "react-toastify";
+import EditCabin from "./EditCabin";
+import DuplicateCabin from "./DuplicateCabin";
+import DeleteCabin from "./DeleteCabin";
 
 const Card = styled.div`
   background-color: var(--color-gray-0);
@@ -63,7 +60,7 @@ const Price = styled.span`
   font-weight: 500;
 `;
 const Discount = styled.span`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.2rem;
   color: var(--color-green-700);
@@ -72,7 +69,7 @@ const Buttons = styled.div`
   display: flex;
   gap: 1rem;
 `;
-const Button = styled.button`
+export const Button = styled.button`
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -84,45 +81,18 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
 `;
-const ButtonName = styled.span`
+export const ButtonName = styled.span`
   font-size: 1rem;
   @media (max-width: 991px) {
     display: none;
   }
 `;
-
-export default function Cabin({ cabin }) {
-  // use react query to delete cabin
-  const queryClient = useQueryClient();
-  const { isPending: isLoading, mutate: deleteMutate } = useMutation({
-    mutationFn: (id) => deleteCabin(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries("cabin");
-      toast.success("success", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        transition: Bounce,
-      });
-    },
-    onError: () => {
-      toast.error("cabin couldn't deleted!", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        transition: Bounce,
-      });
-    },
-  });
-
+export default function Cabin({
+  cabin,
+  setIsAddCabin,
+  setCurrentCabin,
+  setIsUpdate,
+}) {
   return (
     <Card>
       <Image src={cabin.image} alt={cabin.name} />
@@ -130,58 +100,27 @@ export default function Cabin({ cabin }) {
         <Name>{cabin.name}</Name>
         <Description>
           {cabin.description}. <br />
-          Accommodates up to {cabin.maxCapacity} guests.
+          Accommodates up to <Discount>{cabin.maxCapacity} guests.</Discount>
         </Description>
         <PriceContainetr>
           <Price>{cabin.regularPrice}$</Price>
-          {cabin.discount && (
+          {cabin.discount > 0 && (
             <Discount>
               -{cabin.discount}$<MdOutlineDiscount />
             </Discount>
           )}
         </PriceContainetr>
         <Buttons>
-          <Button>
-            <BsCopy />
-            <ButtonName>duplicate</ButtonName>
-          </Button>
-          <Button>
-            <CiEdit />
-            <ButtonName>edit</ButtonName>
-          </Button>
-          <Button onClick={() => deleteMutate(cabin.id)}>
-            {isLoading ? (
-              "Loading"
-            ) : (
-              <>
-                <AiOutlineDelete />
-                <ButtonName>delete</ButtonName>
-              </>
-            )}
-          </Button>
+          <DuplicateCabin cabin={cabin} />
+          <EditCabin
+            setIsAddCabin={setIsAddCabin}
+            setCurrentCabin={setCurrentCabin}
+            setIsUpdate={setIsUpdate}
+            cabin={cabin}
+          />
+          <DeleteCabin cabin={cabin} />
         </Buttons>
       </Content>
     </Card>
   );
-}
-{
-  /*
-  HTML structure
-  <div>
-  <img/>
-  <div>
-    <p></p>
-    <p></p>
-    <div>
-      <span></span>
-      <span></span>
-    </div>
-    <div>
-      <button>
-        icon ==>> svg
-        <span></span>
-      </button>
-    </div>
-  </div>
-</div>; */
 }

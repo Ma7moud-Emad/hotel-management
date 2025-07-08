@@ -68,8 +68,12 @@ const Sort = styled.select`
     outline: 0;
   }
 `;
-const SortOption = styled.option``;
-export default function CabinsHeader({ activeFilter, setActiveFilter }) {
+export default function CabinsHeader({
+  activeFilter,
+  setActiveFilter,
+  activeSort,
+  setActiveSort,
+}) {
   return (
     <Header>
       <Paragraph>all Cabins</Paragraph>
@@ -84,17 +88,17 @@ export default function CabinsHeader({ activeFilter, setActiveFilter }) {
           </TypeFilter>
         </GroupFilters>
         <form>
-          <Sort>
-            <SortOption value="az">Sort by name (A-Z) </SortOption>
-            <SortOption value="za">Sort by name (Z-A) </SortOption>
-            <SortOption value="lPrice">Sort by price (low first) </SortOption>
-            <SortOption value="hPrice">Sort by price (high first) </SortOption>
-            <SortOption value="lCapacity">
-              Sort by capacity (low first)
-            </SortOption>
-            <SortOption value="hCapacity">
-              Sort by capacity (high first)
-            </SortOption>
+          <Sort
+            name="sortWays"
+            defaultValue={activeSort}
+            onChange={(e) => setActiveSort(e.target.value)}
+          >
+            <option value="az">Sort by name (A-Z) </option>
+            <option value="za">Sort by name (Z-A) </option>
+            <option value="lPrice">Sort by price (low first) </option>
+            <option value="hPrice">Sort by price (high first) </option>
+            <option value="lCapacity">Sort by capacity (low first)</option>
+            <option value="hCapacity">Sort by capacity (high first)</option>
           </Sort>
         </form>
       </Filters>

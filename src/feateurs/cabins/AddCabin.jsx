@@ -14,6 +14,23 @@ const Btn = styled.button`
   bottom: 0;
   right: 0;
 `;
+const Span = styled.span`
+  @media (max-width: 639px) {
+    &:first-of-type {
+      display: none;
+    }
+  }
+  @media (min-width: 640px) {
+    &:last-of-type {
+      display: none;
+    }
+  }
+`;
 export default function AddCabin({ setIsAddCabin }) {
-  return <Btn onClick={() => setIsAddCabin(true)}>add new cabin</Btn>;
+  return (
+    <Btn onClick={() => setIsAddCabin(true)}>
+      <Span>add new cabin</Span>
+      <Span>+</Span>
+    </Btn>
+  );
 }

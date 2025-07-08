@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Spinner from "./Spinner";
 
 const Container = styled.div`
   width: 100%;
@@ -8,8 +9,14 @@ const Container = styled.div`
   align-items: center;
   font-size: 2rem;
   font-weight: 600;
+  height: ${(props) => props.$h};
 `;
 
-export default function Loading() {
-  return <Container>Loading...</Container>;
+export default function Loading({ h }) {
+  return (
+    <Container $h={h}>
+      <Spinner />
+      Loading...
+    </Container>
+  );
 }

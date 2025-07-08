@@ -1,5 +1,10 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { HiOutlineXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import toastAlert from "../../servies/alerts";
+import Spinner from "../../ui/Spinner";
+import { addCabin, updateCabin } from "../../servies/cabinsActions";
 
 const Container = styled.div`
   width: 100%;
@@ -14,18 +19,26 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     width: 0;
   }
+  @media (max-width: 640px) {
+    align-items: center;
+  }
 `;
 const Div = styled.div`
   background-color: white;
   padding: 2rem;
   border-radius: 1rem;
   height: fit-content;
+  min-width: 50%;
 `;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: end;
+
+  /*loading in button submit */
+  gap: 0.1rem;
+  align-items: center;
 `;
-const Button = styled.button`
+export const Button = styled.button`
   padding: 0.3rem;
   text-transform: capitalize;
   background-color: white;
@@ -36,23 +49,23 @@ const Button = styled.button`
   margin: ${(props) => props.$marginVal};
   font-size: ${(props) => props.$sizeVal};
 `;
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
   margin-bottom: 1rem;
 `;
-const Label = styled.label`
+export const Label = styled.label`
   display: block;
   color: var(--color-gray-500);
   text-transform: capitalize;
 `;
-const Input = styled.input`
+export const Input = styled.input`
   width: 100%;
-  padding: 0.5rem 0.8rem;
-  font-size: 1.1rem;
+  padding: 0.3rem 0.8rem;
+  font-size: 1rem;
   margin-left: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
   text-transform: capitalize;
-  outline-width: 1px;
   border-radius: 0.3rem;
+  border-width: 1px;
   &#image::-webkit-file-upload-button {
     padding: 0.3rem;
     text-transform: capitalize;
@@ -74,7 +87,6 @@ const Textarea = styled.textarea`
   outline-width: 1px;
   border-radius: 0.3rem;
 `;
-
 const Buttons = styled.div`
   display: flex;
   gap: 1rem;
@@ -82,7 +94,110 @@ const Buttons = styled.div`
   border-top: 1px solid var(--color-gray-400);
   padding-top: 1rem;
 `;
-export default function CreateCabin({ setIsAddCabin }) {
+export const ErrorMsg = styled.p`
+  margin: 0.2rem 0 0 0.5rem;
+  background: var(--color-red-100);
+  width: fit-content;
+  border-radius: 5px;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.7rem;
+  color: var(--color-red-700);
+  float: right;
+`;
+export default function CreateCabin({
+  setIsAddCabin,
+  cabinObj,
+  setCabinObj,
+  isUpdate,
+  setIsUpdate,
+}) {
+  const queryClient = useQueryClient();
+
+  // Form mangement by react hook form
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: cabinObj,
+  });
+
+  function handelResetValues() {
+    // tells React Query to mark the 'cabin' query as stale and refetch the data
+    queryClient.invalidateQueries("cabin");
+
+    // clean form fileds
+    reset();
+
+    // close form
+    setIsAddCabin(false);
+  }
+
+  // using react query to add cabin
+  const { isPending: isCreating, mutate: mutateCreate } = useMutation({
+    mutationFn: (newCabin) => addCabin(newCabin),
+
+    onSuccess: () => {
+      // msg confirm success creation
+      toastAlert("success", "Cabin created successfully");
+
+      handelResetValues();
+    },
+
+    onError: (error) => {
+      // Msg confirm faild creation
+      toastAlert("error", error.message || "Failed to create cabin");
+    },
+  });
+
+  // using react query to add cabin
+  const { isPending: isUpdating, mutate: mutateUpdate } = useMutation({
+    mutationFn: (newCabin) => updateCabin(newCabin),
+
+    onSuccess: (data) => {
+      if (JSON.stringify(cabinObj) === JSON.stringify(data[0])) {
+        toastAlert("info", "No modifications were made");
+      } else {
+        // msg confirm success updating
+        toastAlert("success", "Cabin updated successfully");
+
+        handelResetValues();
+
+        // reset init value of btn in form
+        setIsUpdate(false);
+
+        // when is new create cabin
+        setCabinObj(null);
+      }
+    },
+
+    onError: (error) => {
+      // Msg confirm faild updating
+      toastAlert("error", error.message || "Failed to updated cabin");
+    },
+  });
+
+  function onSubmit(data) {
+    if (cabinObj) {
+      mutateUpdate(data);
+    } else {
+      mutateCreate({
+        ...data,
+        image: data.image[0],
+      });
+    }
+  }
+
+  function canselBtn() {
+    setIsAddCabin(false);
+    setCabinObj(null);
+    setIsUpdate(false);
+  }
+  function XmarkBtn() {
+    setIsAddCabin(false);
+    setCabinObj(null);
+  }
   return (
     <Container>
       <Div>
@@ -90,39 +205,126 @@ export default function CreateCabin({ setIsAddCabin }) {
           <Button
             $marginVal="-1.3rem -1.3rem 0 0"
             $sizeVal="1.5rem"
-            onClick={() => setIsAddCabin(false)}
+            onClick={XmarkBtn}
           >
             <HiOutlineXMark />
           </Button>
         </ButtonContainer>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <InputContainer>
             <Label htmlFor="name">Cabin name</Label>
-            <Input type="text" name="name" id="name" />
+            <Input
+              type="text"
+              autoComplete="given-name"
+              name="name"
+              id="name"
+              {...register("name", {
+                required: "This field is required",
+                minLength: { value: 2, message: "Minimum 2 characters" },
+              })}
+            />
+            {errors.name && <ErrorMsg>{errors.name.message}</ErrorMsg>}
           </InputContainer>
           <InputContainer>
-            <Label htmlFor="capacity">Maximum capacity</Label>
-            <Input type="number" name="maxCapacity" id="capacity" />
+            <Label htmlFor="maxCapacity">Maximum capacity</Label>
+            <Input
+              type="number"
+              autoComplete="off"
+              name="maxCapacity"
+              id="maxCapacity"
+              {...register("maxCapacity", {
+                required: "This field is required",
+                min: { value: 1, message: "Minimum 1 guest" },
+                max: { value: 30, message: "Maximum 30 guests" },
+              })}
+            />
+            {errors.maxCapacity && (
+              <ErrorMsg>{errors.maxCapacity.message}</ErrorMsg>
+            )}
           </InputContainer>
           <InputContainer>
-            <Label htmlFor="price">Regular price</Label>
-            <Input type="text" id="price" name="regularPrice" />
+            <Label htmlFor="regularPrice">Regular price</Label>
+            <Input
+              type="number"
+              autoComplete="full-price"
+              id="regularPrice"
+              name="regularPrice"
+              {...register("regularPrice", {
+                required: "This field is required",
+                min: { value: 1, message: "Minimum 1$" },
+              })}
+            />
+            {errors.regularPrice && (
+              <ErrorMsg>{errors.regularPrice.message}</ErrorMsg>
+            )}
           </InputContainer>
           <InputContainer>
             <Label htmlFor="discount">Discount</Label>
-            <Input type="text" id="discount" name="discount" />
+            <Input
+              type="number"
+              autoComplete="sale-discount"
+              id="discount"
+              name="discount"
+              {...register("discount", {
+                required: "This field is required",
+                min: {
+                  value: 0,
+                  message: "Minimum 0$",
+                },
+              })}
+            />
+            {errors.discount && <ErrorMsg>{errors.discount.message}</ErrorMsg>}
           </InputContainer>
           <InputContainer>
-            <Label htmlFor="description ">Discount</Label>
-            <Textarea name="description " id="description" minLength={5} />
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              name="description"
+              autoComplete="cabin-description"
+              id="description"
+              cols={5}
+              {...register("description", {
+                required: "This field is required",
+                minLength: {
+                  value: 10,
+                  message: "Minimum 10 characters",
+                },
+              })}
+            />
+            {errors.description && (
+              <ErrorMsg>{errors.description.message}</ErrorMsg>
+            )}
           </InputContainer>
           <InputContainer>
             <Label htmlFor="image">cabin photo</Label>
-            <Input type="file" name="image" id="image" />
+            <Input
+              type="file"
+              autoComplete="cabin-phtot"
+              name="image"
+              id="image"
+              accept="image/*"
+              {...register("image", {
+                required: isUpdate ? false : "This field is required",
+              })}
+              disabled={isUpdate}
+            />
+            {errors.image && <ErrorMsg>{errors.image.message}</ErrorMsg>}
           </InputContainer>
           <Buttons>
-            <Button type="submit">cancel</Button>
-            <Button>create</Button>
+            <Button type="reset" onClick={canselBtn}>
+              cancel
+            </Button>
+            <Button type="submit" disabled={isCreating || isUpdating}>
+              {isCreating || isUpdating ? (
+                <ButtonContainer>
+                  <span>Processing</span>
+                  <Spinner />
+                </ButtonContainer>
+              ) : isUpdate ? (
+                "update"
+              ) : (
+                "create"
+              )}
+            </Button>
           </Buttons>
         </form>
       </Div>
