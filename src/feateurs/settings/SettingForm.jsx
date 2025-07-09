@@ -103,7 +103,7 @@ export default function SettingForm() {
     <Container>
       <HeadOne>Update hotel settings</HeadOne>
       {isFetching ? (
-        <Loading h="60vh" />
+        <Loading />
       ) : (
         <Form
           onSubmit={handleSubmit(onSubmit)}

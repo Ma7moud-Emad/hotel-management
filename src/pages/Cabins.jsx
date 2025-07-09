@@ -40,10 +40,6 @@ export default function Cabins() {
     queryFn: () => getCabins(flter, sortWay),
   });
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   if (isError) {
     return <h1>error: {error}</h1>;
   }
@@ -56,7 +52,9 @@ export default function Cabins() {
         setActiveSort={setSortWay}
         activeSort={sortWay}
       />
-      {data.length > 0 ? (
+      {isLoading ? (
+        <Loading />
+      ) : data.length > 0 ? (
         data.map((item) => (
           <Cabin
             setIsAddCabin={setIsAddCabin}
