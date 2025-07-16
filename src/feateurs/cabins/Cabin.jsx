@@ -31,7 +31,6 @@ const Image = styled.img`
   }
   @media (min-width: 1024px) {
     width: 35%;
-    border-radius: 10rem 0.2rem 10rem 0.2rem;
   }
 `;
 const Content = styled.div`

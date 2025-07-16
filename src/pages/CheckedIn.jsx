@@ -7,8 +7,8 @@ import Loading from "../ui/Loading";
 import { useForm } from "react-hook-form";
 import ButtonsContainer from "../ui/ButtonsContainer";
 import BackBtnBooking from "../feateurs/bookings/BackBtnBooking";
-import CheckedInBooking from "../feateurs/bookings/CheckedInBooking";
 import toastAlert from "../servies/alerts";
+import CheckedInBooking from "./../feateurs/check-in-out/CheckedInBooking";
 
 const Form = styled.form`
   padding: 1rem;

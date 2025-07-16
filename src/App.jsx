@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import BookingDetails from "./feateurs/bookings/BookingDetails";
 import CheckedIn from "./pages/CheckedIn";
+import ProtectedRouter from "./ui/ProtectedRouter";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,15 +39,71 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/bookings" element={<Bookings />} />
-            <Route path="/bookings/:bookingId" element={<BookingDetails />} />
-            <Route path="/checked-in/:bookingId" element={<CheckedIn />} />
-            <Route path="/cabins" element={<Cabins />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/account" element={<Account />} />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRouter>
+                  <Dashboard />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/bookings"
+              element={
+                <ProtectedRouter>
+                  <Bookings />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/bookings/:bookingId"
+              element={
+                <ProtectedRouter>
+                  <BookingDetails />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/checked-in/:bookingId"
+              element={
+                <ProtectedRouter>
+                  <CheckedIn />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/cabins"
+              element={
+                <ProtectedRouter>
+                  <Cabins />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRouter>
+                  <Settings />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRouter>
+                  <Users />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <ProtectedRouter>
+                  <Account />
+                </ProtectedRouter>
+              }
+            />
           </Route>
 
           <Route path="/login" element={<Login />} />

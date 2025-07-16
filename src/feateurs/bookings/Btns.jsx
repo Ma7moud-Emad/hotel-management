@@ -1,10 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import ButtonsContainer from "./../../ui/ButtonsContainer";
 import DeleteBooking from "./DeleteBooking";
-import CheckedInBooking from "./CheckedInBooking";
 import BackBtnBooking from "./BackBtnBooking";
 import DetailsBtnBooking from "./DetailsBtnBooking";
-import CheckedOutBooking from "./CheckedOutBooking";
+import CheckedOutBooking from "./../check-in-out/CheckedOutBooking";
 
 export default function Btns({ booking, moreDetails }) {
   const { pathname } = useLocation();

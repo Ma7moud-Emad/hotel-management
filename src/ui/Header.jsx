@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { BsPerson } from "react-icons/bs";
-// import { PiSunDim } from "react-icons/pi";
 import { GoSignOut } from "react-icons/go";
 import { PiMoonLight } from "react-icons/pi";
+import avatarImg from "./../assets/avatar.jpg";
 
 const StyledHeader = styled.header`
   background-color: var(--color-gray-0);
@@ -34,7 +34,6 @@ const Span = styled.span`
   }
 `;
 const Image = styled.img`
-  max-width: 100%;
   width: 3rem;
   border-radius: 50%;
   @media (max-width: 500px) {
@@ -59,10 +58,7 @@ export default function Header() {
     <StyledHeader>
       <Ul>
         <SpecialLi>
-          <Image
-            src="https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/avatars/avatar-8bf4454b-d064-4a81-b1c0-ecde43d5a104-0.8637693045937385"
-            alt="user avatr"
-          />
+          <Image src={avatarImg} alt="user avatar" />
           <Span>user</Span>
         </SpecialLi>
 

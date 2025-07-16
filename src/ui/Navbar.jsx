@@ -61,6 +61,32 @@ const StyledNavLink = styled(NavLink)`
       display: block;
     }
   }
+  &.active span,
+  &:hover span {
+    @media (max-width: 768px) {
+      position: absolute;
+      display: block;
+      top: -10px;
+      left: 0;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1px 3px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      margin: auto;
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -16px;
+        right: 5px;
+        border: 8px solid transparent;
+        border-top-color: white;
+      }
+    }
+  }
+`;
+const Li = styled.li`
+  position: relative;
 `;
 
 export default function Navbar() {
@@ -68,36 +94,36 @@ export default function Navbar() {
     <nav>
       <Logo />
       <NavList>
-        <li title="home">
+        <Li title="home">
           <StyledNavLink to="/dashboard">
             <HiOutlineHome />
             <span> home</span>
           </StyledNavLink>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <StyledNavLink to="/bookings">
             <HiOutlineCalendarDays />
             <span>bookings</span>
           </StyledNavLink>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <StyledNavLink to="/cabins">
             <HiOutlineHomeModern />
             <span>cabins</span>
           </StyledNavLink>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <StyledNavLink to="/users">
             <HiOutlineUsers />
             <span>users</span>
           </StyledNavLink>
-        </li>
-        <li>
+        </Li>
+        <Li>
           <StyledNavLink to="/settings">
             <HiOutlineCog6Tooth />
             <span>settings</span>
           </StyledNavLink>
-        </li>
+        </Li>
       </NavList>
     </nav>
   );

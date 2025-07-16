@@ -9,7 +9,6 @@ import StayInfo from "./StayInfo";
 import GuestInfo from "./GuestInfo";
 import getGuest from "../../servies/guestActions";
 import CabinInfo from "./CabinInfo";
-import Status from "./Status";
 import TotalPrice from "./TotalPrice";
 import Btns from "./Btns";
 import BookingInfo from "./BookingInfo";
