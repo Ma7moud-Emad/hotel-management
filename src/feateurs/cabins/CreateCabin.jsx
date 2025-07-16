@@ -16,7 +16,7 @@ const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
-  overflow-x: scroll;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 0;
   }
@@ -152,7 +152,7 @@ export default function CreateCabin({
     },
   });
 
-  // using react query to add cabin
+  // using react query to update cabin
   const { isPending: isUpdating, mutate: mutateUpdate } = useMutation({
     mutationFn: (newCabin) => updateCabin(newCabin),
 
@@ -175,6 +175,7 @@ export default function CreateCabin({
     },
   });
 
+  // form submittion
   function onSubmit(data) {
     // check if cabin is already exists
     if (cabinObj) {
@@ -193,24 +194,28 @@ export default function CreateCabin({
       });
     }
   }
-
-  function canselBtn() {
+  // Reset state values when close form
+  function onClose() {
     setIsAddCabin(false);
     setCabinObj(null);
     setIsUpdate(false);
   }
-  function XmarkBtn() {
-    setIsAddCabin(false);
-    setCabinObj(null);
+
+  // close form when click into window
+  function handleOutsideClick(event) {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
   }
+
   return (
-    <Container>
+    <Container onClick={handleOutsideClick}>
       <Div>
         <ButtonContainer>
           <Button
             $marginVal="-1.3rem -1.3rem 0 0"
             $sizeVal="1.5rem"
-            onClick={XmarkBtn}
+            onClick={onClose}
           >
             <HiOutlineXMark />
           </Button>
@@ -315,7 +320,7 @@ export default function CreateCabin({
             {errors.image && <ErrorMsg>{errors.image.message}</ErrorMsg>}
           </InputContainer>
           <Buttons>
-            <Button type="reset" onClick={canselBtn}>
+            <Button type="reset" onClick={onClose}>
               cancel
             </Button>
             <Button type="submit" disabled={isCreating || isUpdating}>

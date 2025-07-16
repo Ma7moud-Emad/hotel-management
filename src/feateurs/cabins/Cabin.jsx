@@ -3,6 +3,7 @@ import styled from "styled-components";
 import EditCabin from "./EditCabin";
 import DuplicateCabin from "./DuplicateCabin";
 import DeleteCabin from "./DeleteCabin";
+import ButtonsContainer from "../../ui/ButtonsContainer";
 
 const Card = styled.div`
   background-color: var(--color-gray-0);
@@ -29,6 +30,7 @@ const Image = styled.img`
     border-radius: 7rem 0.2rem 7rem 0.2rem;
   }
   @media (min-width: 1024px) {
+    width: 35%;
     border-radius: 10rem 0.2rem 10rem 0.2rem;
   }
 `;
@@ -40,7 +42,7 @@ const Content = styled.div`
   }
 `;
 const Name = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin: 0;
   margin-bottom: 1rem;
@@ -65,43 +67,23 @@ const Discount = styled.span`
   gap: 0.2rem;
   color: var(--color-green-700);
 `;
-const Buttons = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-export const Button = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 5px;
-  font-size: 1.3rem;
-  color: var(--color-brand-600);
-  text-transform: capitalize;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-`;
-export const ButtonName = styled.span`
-  font-size: 1rem;
-  @media (max-width: 991px) {
-    display: none;
-  }
-`;
+
 export default function Cabin({
   cabin,
   setIsAddCabin,
   setCurrentCabin,
   setIsUpdate,
+  isBtns = true,
 }) {
   return (
     <Card>
       <Image src={cabin.image} alt={cabin.name} />
       <Content>
         <Name>{cabin.name}</Name>
-        <Description>
-          {cabin.description}. <br />
+        <Discount>
+          {cabin.discount}. <br />
           Accommodates up to <Discount>{cabin.maxCapacity} guests.</Discount>
-        </Description>
+        </Discount>
         <PriceContainetr>
           <Price>{cabin.regularPrice}$</Price>
           {cabin.discount > 0 && (
@@ -110,16 +92,18 @@ export default function Cabin({
             </Discount>
           )}
         </PriceContainetr>
-        <Buttons>
-          <DuplicateCabin cabin={cabin} />
-          <EditCabin
-            setIsAddCabin={setIsAddCabin}
-            setCurrentCabin={setCurrentCabin}
-            setIsUpdate={setIsUpdate}
-            cabin={cabin}
-          />
-          <DeleteCabin cabin={cabin} />
-        </Buttons>
+        {isBtns && (
+          <ButtonsContainer>
+            <DuplicateCabin cabin={cabin} />
+            <EditCabin
+              setIsAddCabin={setIsAddCabin}
+              setCurrentCabin={setCurrentCabin}
+              setIsUpdate={setIsUpdate}
+              cabin={cabin}
+            />
+            <DeleteCabin cabin={cabin} />
+          </ButtonsContainer>
+        )}
       </Content>
     </Card>
   );

@@ -3,7 +3,8 @@ import { deleteCabin } from "../../servies/cabinsActions";
 import toastAlert from "../../servies/alerts";
 import Spinner from "./../../ui/Spinner";
 import { AiOutlineDelete } from "react-icons/ai";
-import { Button, ButtonName } from "./Cabin";
+import Button from "../../ui/Button";
+import ButtonName from "../../ui/ButtonName";
 
 export default function DeleteCabin({ cabin }) {
   const queryClient = useQueryClient();
@@ -23,7 +24,7 @@ export default function DeleteCabin({ cabin }) {
     },
   });
   return (
-    <Button disabled={isDeleting} onClick={() => deleteMutate(cabin)}>
+    <Button disabled={isDeleting} clickFun={() => deleteMutate(cabin)}>
       {isDeleting ? (
         <Spinner />
       ) : (

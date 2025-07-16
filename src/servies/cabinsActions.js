@@ -46,6 +46,20 @@ export default async function getCabins(way = "all", sort = "az") {
 
   return fetchCabins;
 }
+// fetch cabin #ID
+export async function getCabin(id) {
+  const { data: cabinData, error: errorcabinData } = await supabase
+    .from("cabins")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (errorcabinData) {
+    throw errorcabinData;
+  }
+
+  return cabinData;
+}
 
 // add new cabin
 export async function addCabin(newCabin) {

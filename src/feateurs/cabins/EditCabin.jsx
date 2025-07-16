@@ -1,5 +1,6 @@
 import { CiEdit } from "react-icons/ci";
-import { Button, ButtonName } from "./Cabin";
+import ButtonName from "./../../ui/ButtonName";
+import Button from "../../ui/Button";
 
 export default function EditCabin({
   setIsAddCabin,
@@ -9,7 +10,7 @@ export default function EditCabin({
 }) {
   return (
     <Button
-      onClick={() => {
+      clickFun={() => {
         setIsAddCabin(true);
         setCurrentCabin(cabin);
         setIsUpdate(true);

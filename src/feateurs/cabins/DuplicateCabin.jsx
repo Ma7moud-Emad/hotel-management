@@ -3,7 +3,8 @@ import { duplicateCabin } from "../../servies/cabinsActions";
 import toastAlert from "../../servies/alerts";
 import Spinner from "../../ui/Spinner";
 import { BsCopy } from "react-icons/bs";
-import { Button, ButtonName } from "./Cabin";
+import Button from "../../ui/Button";
+import ButtonName from "../../ui/ButtonName";
 
 export default function DuplicateCabin({ cabin }) {
   const queryClient = useQueryClient();
@@ -22,7 +23,7 @@ export default function DuplicateCabin({ cabin }) {
     },
   });
   return (
-    <Button disabled={isDuplicating} onClick={() => duplicateMutate(cabin)}>
+    <Button disabled={isDuplicating} clickFun={() => duplicateMutate(cabin)}>
       {isDuplicating ? (
         <Spinner />
       ) : (

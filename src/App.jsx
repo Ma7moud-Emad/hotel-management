@@ -11,6 +11,8 @@ import GlobalStyles from "./styles/GlobalStyels";
 import Layout from "./ui/Layout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
+import BookingDetails from "./feateurs/bookings/BookingDetails";
+import CheckedIn from "./pages/CheckedIn";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +41,8 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/bookings" element={<Bookings />} />
+            <Route path="/bookings/:bookingId" element={<BookingDetails />} />
+            <Route path="/checked-in/:bookingId" element={<CheckedIn />} />
             <Route path="/cabins" element={<Cabins />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/users" element={<Users />} />

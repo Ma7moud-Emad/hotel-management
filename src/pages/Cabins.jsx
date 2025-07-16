@@ -1,25 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
 import Cabin from "../feateurs/cabins/Cabin";
 import Loading from "./../ui/Loading";
-import CabinsHeader from "./../feateurs/cabins/CabinsHeader";
 import { useState } from "react";
 import AddCabin from "./../feateurs/cabins/AddCabin";
 import CreateCabin from "../feateurs/cabins/CreateCabin";
 import getCabins from "../servies/cabinsActions";
-import styled from "styled-components";
-
-const Empty = styled.div`
-  height: 66%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 500;
-  text-transform: capitalize;
-`;
+import FeatureHeader from "../ui/FeatureHeader/";
+import Empty from "../ui/Empty";
 
 export default function Cabins() {
+  // sort options
+  const sortOptions = [
+    { name: "Sort by name (A-Z)", value: "az" },
+    { name: "Sort by name (Z-A)", value: "za" },
+    { name: "Sort by price (low first)", value: "lPrice" },
+    { name: "Sort by price (high first)", value: "hPrice" },
+    { name: "Sort by capacity (low first)", value: "lCapacity" },
+    { name: "Sort by capacity (high first)", value: "hCapacity" },
+  ];
+
+  // Filtration methods
+  const filterWays = ["all", "with discount", "no discount"];
+
   // type of filter
   const [flter, setFlter] = useState("all");
 
@@ -46,11 +48,14 @@ export default function Cabins() {
 
   return (
     <>
-      <CabinsHeader
+      <FeatureHeader
         activeFilter={flter}
         setActiveFilter={setFlter}
         setActiveSort={setSortWay}
         activeSort={sortWay}
+        title="all cabins"
+        options={sortOptions}
+        filters={filterWays}
       />
       {isLoading ? (
         <Loading />
@@ -65,7 +70,7 @@ export default function Cabins() {
           />
         ))
       ) : (
-        <Empty>Not found</Empty>
+        <Empty />
       )}
       <AddCabin setIsAddCabin={setIsAddCabin} />
       {isAddCabin && (

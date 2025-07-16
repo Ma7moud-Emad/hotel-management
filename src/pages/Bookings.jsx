@@ -1,57 +1,73 @@
+import { useQuery } from "@tanstack/react-query";
+import getBookings from "./../servies/bookingAction";
 import { useState } from "react";
+import FeatureHeader from "../ui/FeatureHeader";
+import Booking from "../feateurs/bookings/Booking";
+import Loading from "../ui/Loading";
 import styled from "styled-components";
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  font-size: 30px;
-  text-transform: capitalize;
-  font-weight: 700;
-`;
+import Empty from "../ui/Empty";
 
 const Content = styled.div`
-  padding: 1rem;
+  margin: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+  @media (min-width: 640px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
+
 export default function Bookings() {
-  return <List />;
-}
-const numList = Array.from({ length: 36 }, (_, i) => i + 1);
+  // sort options
+  const sortOptions = [
+    { name: "Sort by date (recent first)", value: "recent" },
+    { name: "Sort by date (earlier first)", value: "earlier " },
+    { name: "Sort by amount (high first)", value: "hAmount" },
+    { name: "Sort by amount (low first)", value: "lAmount" },
+  ];
 
-function List() {
-  const [isShow, setIsShow] = useState(false);
-  const [end, setEnd] = useState(10);
+  // Filtration methods
+  const filterWays = ["all", "checkedIn", "checkedOut", "unconfirmed"];
+
+  // type of filter
+  const [flter, setFlter] = useState("all");
+
+  // type of sort way
+  const [sortWay, setSortWay] = useState("recent");
+
+  // display all bookings
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["bookings", flter, sortWay],
+    queryFn: () => getBookings(flter, sortWay),
+  });
+
+  if (isError) {
+    return <h1>error: {error}</h1>;
+  }
+
   return (
-    <div>
-      <Header>
-        <span>all list</span>
-        <button onClick={() => setIsShow(!isShow)}>{isShow ? "-" : "+"}</button>
-      </Header>
-      {isShow && (
-        <>
-          <Content>
-            {numList.slice(0, end).map((item) => (
-              <h1 key={item}>{item}</h1>
-            ))}
-          </Content>
-
-          <button
-            onClick={() => {
-              if (end + 10 > numList.length) {
-                setEnd(numList.length);
-              } else {
-                setEnd(end + 10);
-              }
-              if (end == numList.length) {
-                setEnd(10);
-              }
-            }}
-          >
-            {end == numList.length ? "show less" : "show more"}
-          </button>
-        </>
+    <>
+      <FeatureHeader
+        activeFilter={flter}
+        setActiveFilter={setFlter}
+        setActiveSort={setSortWay}
+        activeSort={sortWay}
+        title="all bookings"
+        options={sortOptions}
+        filters={filterWays}
+        typeHeader="booking"
+      />
+      {isPending ? (
+        <Loading />
+      ) : (
+        <Content>
+          {data.length == 0 ? (
+            <Empty />
+          ) : (
+            data.map((item) => <Booking booking={item} key={item.id} />)
+          )}
+        </Content>
       )}
-    </div>
+    </>
   );
 }
