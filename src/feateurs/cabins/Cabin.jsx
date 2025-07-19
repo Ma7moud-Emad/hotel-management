@@ -61,9 +61,6 @@ const Price = styled.span`
   font-weight: 500;
 `;
 const Discount = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
   color: var(--color-green-700);
 `;
 
@@ -80,14 +77,13 @@ export default function Cabin({
       <Content>
         <Name>{cabin.name}</Name>
         <Discount>
-          {cabin.discount}. <br />
           Accommodates up to <Discount>{cabin.maxCapacity} guests.</Discount>
         </Discount>
         <PriceContainetr>
           <Price>{cabin.regularPrice}$</Price>
           {cabin.discount > 0 && (
             <Discount>
-              -{cabin.discount}$<MdOutlineDiscount />
+              <MdOutlineDiscount /> -{cabin.discount}$
             </Discount>
           )}
         </PriceContainetr>

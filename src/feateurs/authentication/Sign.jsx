@@ -1,13 +1,9 @@
 import styled from "styled-components";
-import bgImg from "./../assets/loginBg.jpg";
+import bgImg from "./../../assets/loginBg.jpg";
 import { MdOutlineAttachEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { useForm } from "react-hook-form";
-import login from "../servies/authActions";
-import { useMutation } from "@tanstack/react-query";
-import toastAlert from "../servies/alerts";
-import Spinner from "../ui/Spinner";
-import { useNavigate } from "react-router-dom";
+import Spinner from "../../ui/Spinner";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   background-image: url(${bgImg});
@@ -52,10 +48,10 @@ const P = styled.p`
   text-align: center;
   font-weight: 600;
   text-transform: capitalize;
-  color: var(--color-gray-300);
+  color: #d1d5db;
 `;
 const InputContainer = styled.div`
-  background-color: var(--color-gray-300);
+  background-color: #d1d5db;
   padding-left: 0.5rem;
   border-radius: 0.3rem;
   display: flex;
@@ -76,62 +72,51 @@ const Input = styled.input`
   }
 `;
 const Btn = styled.button`
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   border: none;
-  float: right;
   border-radius: 0.5rem;
-  background-color: var(--color-gray-300);
-  color: black;
+  background-color: #d1d5db;
+  color: #111827;
   font-size: 1.1rem;
   text-transform: capitalize;
   font-weight: 600;
-  margin-bottom: 2rem;
+  display: block;
+  margin-left: auto;
   &:focus {
     outline: none !important;
-    background-color: var(--color-gray-300) !important;
+    background-color: #d1d5db !important;
   }
 `;
 const ErrorMsg = styled.p`
   margin: 0;
-  color: var(--color-gray-300);
+  color: #d1d5db;
   text-transform: capitalize;
   font-size: 0.8rem;
   text-align: end;
 `;
-
-export default function Login() {
-  const navigate = useNavigate();
-  // using react-hook-form to form mangement
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: "mahmoud@gmail.com",
-      password: "mahmoud@gmail.com",
-    },
-  });
-
-  const { isPending: isLogin, mutate: loginMutate } = useMutation({
-    mutationFn: ({ email, password }) => login({ email, password }),
-
-    onSuccess: () => {
-      toastAlert("success", "Welcome back");
-      setTimeout(() => navigate("/"), 3000);
-    },
-
-    onError: (error) => {
-      toastAlert("error", error.message || "Failed to loged in");
-    },
-  });
-  function onSubmit(data) {
-    loginMutate(data);
-  }
+const A = styled(Link)`
+  text-transform: capitalize;
+  font-weight: 600;
+  text-decoration: underline !important;
+  cursor: pointer;
+`;
+const Msg = styled.p`
+  color: #d1d5db;
+  margin-top: 0;
+`;
+export default function Sign({
+  register,
+  errors,
+  isSign,
+  signType,
+  handleSubmit,
+  onSubmit,
+  msg,
+}) {
   return (
     <Container>
       <Wrapper>
-        <P>log in to access your hotel management dashboard</P>
+        <P>{msg}</P>
         <form onSubmit={handleSubmit(onSubmit)}>
           {errors.email && <ErrorMsg>{errors.email.message}</ErrorMsg>}
           <InputContainer>
@@ -140,6 +125,7 @@ export default function Login() {
               type="email"
               name="email"
               placeholder="Email"
+              autoComplete="username"
               {...register("email", {
                 required: "Please enter your email address",
                 pattern: {
@@ -156,6 +142,7 @@ export default function Login() {
               type="password"
               name="password"
               placeholder="Password"
+              autoComplete="current-password"
               {...register("password", {
                 required: "Please enter your password",
                 minLength: {
@@ -165,10 +152,22 @@ export default function Login() {
               })}
             />
           </InputContainer>
-          <Btn type="submit" disabled={isLogin}>
-            {isLogin ? <Spinner /> : "Sign in"}
+          <Btn type="submit" disabled={isSign}>
+            {isSign ? <Spinner /> : signType}
           </Btn>
         </form>
+        {signType == "sign in" && (
+          <Msg>
+            <span>Don't have an acconut? </span>
+            <A to="/signup">sign up</A>
+          </Msg>
+        )}
+        {signType == "sign up" && (
+          <Msg>
+            <span>Already have an account? </span>
+            <A to="/signin">sign in</A>
+          </Msg>
+        )}
       </Wrapper>
     </Container>
   );

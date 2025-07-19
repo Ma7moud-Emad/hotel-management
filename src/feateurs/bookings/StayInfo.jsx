@@ -8,7 +8,7 @@ const Container = styled.div`
   display: ${({ $active }) => $active && "flex"};
   flex-direction: ${({ $active }) => $active && "column"};
   justify-content: ${({ $active }) => $active && "space-between"};
-  color: ${({ $active }) => $active && "white"};
+  color: ${({ $active }) => $active && "#f9fafb"};
   background-color: ${({ $active }) => $active && "var(--color-brand-500)"};
   padding: ${({ $active }) => $active && "1rem"};
   border-radius: ${({ $active }) => $active && ".5rem .5rem 0 0"};
@@ -30,7 +30,7 @@ const Time = styled.div`
   gap: 1rem;
   color: var(--color-gray-400);
   font-size: 11px;
-  color: ${({ $active }) => $active && "white"};
+  color: ${({ $active }) => $active && "#f9fafb"};
 `;
 export default function StayInfo({ booking, moreDetails = false }) {
   return (

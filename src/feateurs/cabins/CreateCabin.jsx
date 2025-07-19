@@ -6,6 +6,7 @@ import toastAlert from "../../servies/alerts";
 import Spinner from "../../ui/Spinner";
 import { addCabin, updateCabin } from "../../servies/cabinsActions";
 import _ from "lodash";
+import InputForm from "./Input";
 
 const Container = styled.div`
   width: 100%;
@@ -25,7 +26,7 @@ const Container = styled.div`
   }
 `;
 const Div = styled.div`
-  background-color: white;
+  background-color: var(--color-gray-0);
   padding: 2rem;
   border-radius: 1rem;
   height: fit-content;
@@ -42,7 +43,7 @@ const ButtonContainer = styled.div`
 export const Button = styled.button`
   padding: 0.3rem;
   text-transform: capitalize;
-  background-color: white;
+  background-color: var(--color-gray-0);
   font-weight: 600;
   border-color: var(--color-gray-50);
   border-radius: 0.5rem;
@@ -70,7 +71,7 @@ export const Input = styled.input`
   &#image::-webkit-file-upload-button {
     padding: 0.3rem;
     text-transform: capitalize;
-    background-color: white;
+    background-color: var(--color-gray-0);
     font-weight: 600;
     border-color: var(--color-gray-50);
     border-radius: 0.5rem;
@@ -87,6 +88,9 @@ const Textarea = styled.textarea`
   text-transform: capitalize;
   outline-width: 1px;
   border-radius: 0.3rem;
+  background-color: var(--color-gray-0);
+  color: var(--color-gray-900);
+  border: 1px solid var(--color-gray-900);
 `;
 const Buttons = styled.div`
   display: flex;
@@ -221,70 +225,66 @@ export default function CreateCabin({
           </Button>
         </ButtonContainer>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <InputContainer>
-            <Label htmlFor="name">Cabin name</Label>
-            <Input
-              type="text"
-              autoComplete="given-name"
-              name="name"
-              id="name"
-              {...register("name", {
-                required: "This field is required",
-                minLength: { value: 2, message: "Minimum 2 characters" },
-              })}
-            />
-            {errors.name && <ErrorMsg>{errors.name.message}</ErrorMsg>}
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="maxCapacity">Maximum capacity</Label>
-            <Input
-              type="number"
-              autoComplete="off"
-              name="maxCapacity"
-              id="maxCapacity"
-              {...register("maxCapacity", {
-                required: "This field is required",
-                min: { value: 1, message: "Minimum 1 guest" },
-                max: { value: 30, message: "Maximum 30 guests" },
-              })}
-            />
-            {errors.maxCapacity && (
-              <ErrorMsg>{errors.maxCapacity.message}</ErrorMsg>
-            )}
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="regularPrice">Regular price</Label>
-            <Input
-              type="number"
-              autoComplete="full-price"
-              id="regularPrice"
-              name="regularPrice"
-              {...register("regularPrice", {
-                required: "This field is required",
-                min: { value: 1, message: "Minimum 1$" },
-              })}
-            />
-            {errors.regularPrice && (
-              <ErrorMsg>{errors.regularPrice.message}</ErrorMsg>
-            )}
-          </InputContainer>
-          <InputContainer>
-            <Label htmlFor="discount">Discount</Label>
-            <Input
-              type="number"
-              autoComplete="sale-discount"
-              id="discount"
-              name="discount"
-              {...register("discount", {
-                required: "This field is required",
-                min: {
-                  value: 0,
-                  message: "Minimum 0$",
-                },
-              })}
-            />
-            {errors.discount && <ErrorMsg>{errors.discount.message}</ErrorMsg>}
-          </InputContainer>
+          <InputForm
+            register={register}
+            errors={errors}
+            type="text"
+            autoComplete="given-name"
+            name="name"
+            id="name"
+            validates={{
+              required: "This field is required",
+              minLength: { value: 2, message: "Minimum 2 characters" },
+            }}
+            label="Cabin name"
+          />
+
+          <InputForm
+            register={register}
+            errors={errors}
+            type="number"
+            autoComplete="off"
+            name="maxCapacity"
+            id="maxCapacity"
+            validates={{
+              required: "This field is required",
+              min: { value: 1, message: "Minimum 1 guest" },
+              max: { value: 30, message: "Maximum 30 guests" },
+            }}
+            label="Maximum capacity"
+          />
+
+          <InputForm
+            register={register}
+            errors={errors}
+            type="number"
+            autoComplete="full-price"
+            id="regularPrice"
+            name="regularPrice"
+            validates={{
+              required: "This field is required",
+              min: { value: 1, message: "Minimum 1$" },
+            }}
+            label="Regular price"
+          />
+
+          <InputForm
+            register={register}
+            errors={errors}
+            type="number"
+            autoComplete="sale-discount"
+            id="discount"
+            name="discount"
+            validates={{
+              required: "This field is required",
+              min: {
+                value: 0,
+                message: "Minimum 0$",
+              },
+            }}
+            label="Discount"
+          />
+
           <InputContainer>
             <Label htmlFor="description">Description</Label>
             <Textarea
@@ -304,21 +304,21 @@ export default function CreateCabin({
               <ErrorMsg>{errors.description.message}</ErrorMsg>
             )}
           </InputContainer>
-          <InputContainer>
-            <Label htmlFor="image">cabin photo</Label>
-            <Input
-              type="file"
-              autoComplete="cabin-phtot"
-              name="image"
-              id="image"
-              accept="image/*"
-              {...register("image", {
-                required: isUpdate ? false : "This field is required",
-              })}
-              disabled={isUpdate}
-            />
-            {errors.image && <ErrorMsg>{errors.image.message}</ErrorMsg>}
-          </InputContainer>
+
+          <InputForm
+            register={register}
+            errors={errors}
+            type="file"
+            autoComplete="cabin-phtot"
+            name="image"
+            id="image"
+            validates={{
+              required: isUpdate ? false : "This field is required",
+            }}
+            label="cabin photo"
+            isDisabled={isUpdate}
+          />
+
           <Buttons>
             <Button type="reset" onClick={onClose}>
               cancel

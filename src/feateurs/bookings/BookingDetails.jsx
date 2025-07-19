@@ -14,7 +14,7 @@ import Btns from "./Btns";
 import BookingInfo from "./BookingInfo";
 
 const Container = styled.div`
-  background-color: white;
+  background-color: var(--color-gray-0);
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 1rem;
@@ -45,6 +45,7 @@ export default function BookingDetails({ children }) {
     queryKey: ["guest#"],
     queryFn: () => getGuest(bookingData.guestId),
   });
+
   if (bookingLoading || cabinLoading || guestLoading) {
     return <Loading />;
   }

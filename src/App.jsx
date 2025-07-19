@@ -3,7 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Account from "./pages/Account";
 import PageNotFound from "./pages/PageNotFound";
-import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
 import Bookings from "./pages/Bookings";
 import Cabins from "./pages/Cabins";
 import Settings from "./pages/Settings";
@@ -14,6 +14,9 @@ import { ToastContainer } from "react-toastify";
 import BookingDetails from "./feateurs/bookings/BookingDetails";
 import CheckedIn from "./pages/CheckedIn";
 import ProtectedRouter from "./ui/ProtectedRouter";
+import SignUp from "./pages/SignUp";
+import ThemeProvider from "./context/ThemeContext";
+import ChangePassword from "./pages/ChangePassword";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,83 +36,37 @@ const queryClient = new QueryClient({
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalStyles />
-      <ToastContainer />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <GlobalStyles />
+        <ToastContainer />
+        <BrowserRouter>
+          <Routes>
             <Route
-              path="/dashboard"
               element={
                 <ProtectedRouter>
-                  <Dashboard />
+                  <Layout />
                 </ProtectedRouter>
               }
-            />
-            <Route
-              path="/bookings"
-              element={
-                <ProtectedRouter>
-                  <Bookings />
-                </ProtectedRouter>
-              }
-            />
-            <Route
-              path="/bookings/:bookingId"
-              element={
-                <ProtectedRouter>
-                  <BookingDetails />
-                </ProtectedRouter>
-              }
-            />
-            <Route
-              path="/checked-in/:bookingId"
-              element={
-                <ProtectedRouter>
-                  <CheckedIn />
-                </ProtectedRouter>
-              }
-            />
-            <Route
-              path="/cabins"
-              element={
-                <ProtectedRouter>
-                  <Cabins />
-                </ProtectedRouter>
-              }
-            />
-            <Route
-              path="/settings"
-              element={
-                <ProtectedRouter>
-                  <Settings />
-                </ProtectedRouter>
-              }
-            />
-            <Route
-              path="/users"
-              element={
-                <ProtectedRouter>
-                  <Users />
-                </ProtectedRouter>
-              }
-            />
-            <Route
-              path="/account"
-              element={
-                <ProtectedRouter>
-                  <Account />
-                </ProtectedRouter>
-              }
-            />
-          </Route>
+            >
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/bookings" element={<Bookings />} />
+              <Route path="/bookings/:bookingId" element={<BookingDetails />} />
+              <Route path="/checked-in/:bookingId" element={<CheckedIn />} />
+              <Route path="/cabins" element={<Cabins />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/changePassword" element={<ChangePassword />} />
+            </Route>
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }

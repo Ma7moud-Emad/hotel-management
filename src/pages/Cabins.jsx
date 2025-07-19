@@ -45,7 +45,9 @@ export default function Cabins() {
   if (isError) {
     return <h1>error: {error}</h1>;
   }
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <>
       <FeatureHeader

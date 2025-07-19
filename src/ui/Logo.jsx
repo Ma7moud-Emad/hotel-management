@@ -1,6 +1,9 @@
 import styled from "styled-components";
-import logoImg from "/src/assets/logo-light.png";
+import logoLight from "/src/assets/logo-light.png";
+import logoDark from "/src/assets/logo-dark.png";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const StyledLogo = styled(Link)`
   text-align: center;
@@ -14,9 +17,11 @@ const Image = styled.img`
   }
 `;
 export default function Logo() {
+  const { isDarkMode } = useContext(ThemeContext);
+
   return (
     <StyledLogo to="/">
-      <Image src={logoImg} alt="Logo" />
+      <Image src={isDarkMode ? logoDark : logoLight} alt="Logo" />
     </StyledLogo>
   );
 }

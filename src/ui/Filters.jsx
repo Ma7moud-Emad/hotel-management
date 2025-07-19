@@ -8,6 +8,7 @@ const GroupFilters = styled.ul`
   margin: 0;
   padding: 0.2rem;
   border-radius: 0.5rem;
+  background-color: var(--color-gray-0);
 `;
 
 export default function Filters({
@@ -15,9 +16,10 @@ export default function Filters({
   activeFilter,
   setActiveFilter,
   typeHeader,
+  bgC = false,
 }) {
   return (
-    <GroupFilters>
+    <GroupFilters $active={bgC}>
       {filters.map((item, index) => (
         <FilterItem
           typeHeader={typeHeader}

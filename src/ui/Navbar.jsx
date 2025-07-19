@@ -68,7 +68,7 @@ const StyledNavLink = styled(NavLink)`
       display: block;
       top: -10px;
       left: 0;
-      background-color: white;
+      background-color: var(--color-gray-0);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       padding: 1px 3px;
       border-radius: 5px;
@@ -80,7 +80,7 @@ const StyledNavLink = styled(NavLink)`
         bottom: -16px;
         right: 5px;
         border: 8px solid transparent;
-        border-top-color: white;
+        border-top-color: var(--color-gray-0);
       }
     }
   }

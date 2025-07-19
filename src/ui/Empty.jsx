@@ -6,9 +6,12 @@ const Div = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: 500;
   text-transform: capitalize;
+  @media (min-width: 640px) {
+    font-size: 2rem;
+  }
 `;
 
 export default function Empty() {

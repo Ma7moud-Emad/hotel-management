@@ -98,3 +98,34 @@ export async function checkOutBooking(id) {
 
   return checkOutData;
 }
+
+/**
+ * Fetches bookings from the last N days
+ * @param {number} days - Number of days to look back (default: 7)
+ * @returns {Promise<Array>} Array of booking records
+ */
+export async function getRecentBookings(days) {
+  const timePeriods = {
+    "last 7 days": 7,
+    "last 30 days": 30,
+    "last 90 days": 90,
+  };
+
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("created_at,extrasPrice,totalPrice,status,numNights")
+    .gte(
+      "created_at",
+      new Date(
+        Date.now() - timePeriods[days] * 24 * 60 * 60 * 1000
+      ).toISOString()
+    )
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+
+  return data;
+}

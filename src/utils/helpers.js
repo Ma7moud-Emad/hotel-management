@@ -1,4 +1,4 @@
-export default function formatDate(inputDate) {
+export default function formatDate(inputDate, status = true) {
   const date = new Date(inputDate);
 
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -33,5 +33,7 @@ export default function formatDate(inputDate) {
     .toString()
     .padStart(2, "0")} ${ampm}`;
 
-  return `${dayName}, ${monthName} ${day} ${year}, ${formattedTime}`;
+  return status
+    ? `${dayName}, ${monthName} ${day} ${year}, ${formattedTime}`
+    : `${monthName} ${day} ${year}`;
 }

@@ -10,7 +10,7 @@ import BookingHeader from "./BookingHeader";
 import Btns from "./Btns";
 
 const Container = styled.div`
-  background-color: white;
+  background-color: var(--color-gray-0);
   padding: 0.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -23,7 +23,7 @@ export default function Booking({ booking }) {
     queryFn: () => getCabin(booking.cabinId),
   });
 
-  // fetch guest
+  // fetch guest #id
   const { data: guestInfo, isPending: guestLoading } = useQuery({
     queryKey: ["guest", booking.guestId],
     queryFn: () => getGuest(booking.guestId),

@@ -13,17 +13,11 @@ import { useCallback, useEffect, useState } from "react";
 import Loading from "../../ui/Loading";
 import toastAlert from "../../servies/alerts";
 import Spinner from "../../ui/Spinner";
+import FormHeader from "./FormHeader";
+import InputForm from "../cabins/Input";
 
 const Container = styled.div`
   padding: 1rem;
-`;
-const HeadOne = styled.h1`
-  width: fit-content;
-  border-bottom: 1px solid var(--color-gray-300);
-  padding-bottom: 0.3rem;
-  margin-top: 0;
-  margin-bottom: 3rem;
-  font-size: 1.5rem;
 `;
 const Form = styled.form`
   /* md screen */
@@ -101,7 +95,7 @@ export default function SettingForm() {
 
   return (
     <Container>
-      <HeadOne>Update hotel settings</HeadOne>
+      <FormHeader>Update hotel settings</FormHeader>
       {isFetching ? (
         <Loading />
       ) : (
@@ -109,77 +103,66 @@ export default function SettingForm() {
           onSubmit={handleSubmit(onSubmit)}
           onChange={() => setIsChangeSettings(true)}
         >
-          <InputContainer>
-            <Label htmlFor="minBookingLength">Minimum nights/booking</Label>
-            <Input
-              type="number"
-              autoComplete="minBookingLength"
-              name="minBookingLength"
-              id="minBookingLength"
-              {...setting("minBookingLength", {
-                required: "This field is required",
-                min: { value: 3, message: "Minimum 3 nights/booking" },
-                max: {
-                  value: maxBookingLength,
-                  message: `Minimum ${maxBookingLength} nights/booking`,
-                },
-              })}
-            />
-            {errors.minBookingLength && (
-              <ErrorMsg>{errors.minBookingLength.message}</ErrorMsg>
-            )}
-          </InputContainer>
+          <InputForm
+            register={setting}
+            errors={errors}
+            type="number"
+            autoComplete="minBookingLength"
+            name="minBookingLength"
+            id="minBookingLength"
+            validates={{
+              required: "This field is required",
+              min: { value: 3, message: "Minimum 3 nights/booking" },
+              max: {
+                value: maxBookingLength,
+                message: `Minimum ${maxBookingLength} nights/booking`,
+              },
+            }}
+            label="Minimum nights/booking"
+          />
 
-          <InputContainer>
-            <Label htmlFor="maxBookingLength">Maximum nights/booking</Label>
-            <Input
-              type="number"
-              autoComplete="maxBookingLength"
-              name="maxBookingLength"
-              id="maxBookingLength"
-              {...setting("maxBookingLength", {
-                required: "This field is required",
-                min: { value: 10, message: "Minimum 10 nights/booking" },
-              })}
-            />
-            {errors.maxBookingLength && (
-              <ErrorMsg>{errors.maxBookingLength.message}</ErrorMsg>
-            )}
-          </InputContainer>
+          <InputForm
+            register={setting}
+            errors={errors}
+            type="number"
+            autoComplete="maxBookingLength"
+            name="maxBookingLength"
+            id="maxBookingLength"
+            validates={{
+              required: "This field is required",
+              min: { value: 10, message: "Minimum 10 nights/booking" },
+            }}
+            label="Maximum nights/booking"
+          />
 
-          <InputContainer>
-            <Label htmlFor="maxGuestsPreBookings">Maximum guests/booking</Label>
-            <Input
-              type="number"
-              autoComplete="maxGuestsPreBookings"
-              name="maxGuestsPreBookings"
-              id="maxGuestsPreBookings"
-              {...setting("maxGuestsPreBookings", {
-                required: "This field is required",
-                min: { value: 8, message: "Minimum 8 nights/booking" },
-              })}
-            />
-            {errors.maxGuestsPreBookings && (
-              <ErrorMsg>{errors.maxGuestsPreBookings.message}</ErrorMsg>
-            )}
-          </InputContainer>
+          <InputForm
+            register={setting}
+            errors={errors}
+            type="number"
+            autoComplete="maxGuestsPreBookings"
+            name="maxGuestsPreBookings"
+            id="maxGuestsPreBookings"
+            validates={{
+              required: "This field is required",
+              min: { value: 8, message: "Minimum 8 nights/booking" },
+            }}
+            label="Maximum guests/booking"
+          />
 
-          <InputContainer>
-            <Label htmlFor="breakfastPrice">Breakfast price</Label>
-            <Input
-              type="number"
-              autoComplete="breakfastPrice"
-              name="breakfastPrice"
-              id="breakfastPrice"
-              {...setting("breakfastPrice", {
-                required: "This field is required",
-                min: { value: 10, message: "Minimum 10 nights/booking" },
-              })}
-            />
-            {errors.breakfastPrice && (
-              <ErrorMsg>{errors.breakfastPrice.message}</ErrorMsg>
-            )}
-          </InputContainer>
+          <InputForm
+            register={setting}
+            errors={errors}
+            type="number"
+            autoComplete="breakfastPrice"
+            name="breakfastPrice"
+            id="breakfastPrice"
+            validates={{
+              required: "This field is required",
+              min: { value: 10, message: "Minimum 10 nights/booking" },
+            }}
+            label="Breakfast price"
+          />
+
           {isChangeSettings && (
             <Button type="submit" disabled={isChanging}>
               {isChanging ? (

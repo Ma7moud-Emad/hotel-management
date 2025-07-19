@@ -3,13 +3,13 @@ import styled from "styled-components";
 const Btn = styled.button`
   padding: 0.5rem 1rem;
   text-transform: capitalize;
-  background-color: white;
+  background-color: var(--color-gray-0);
   font-size: 1.2rem;
   font-weight: 600;
-  border-color: var(--color-gray-50);
+  border: 2px solid var(--color-gray-900);
   border-radius: 0.5rem;
   margin: 1rem;
-  color: var(--color-brand-600);
+  color: var(--color-gray-900);
   position: fixed;
   bottom: 0;
   right: 0;

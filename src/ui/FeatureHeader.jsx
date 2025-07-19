@@ -3,16 +3,11 @@ import Select from "./Select";
 import Filters from "./Filters";
 
 const Header = styled.header`
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
-  @media (max-width: 950px) {
-    display: flex;
+  @media (max-width: ${({ $active }) => $active}) {
     flex-direction: column;
     align-items: start;
     gap: 0.5rem;
@@ -45,24 +40,29 @@ export default function FeatureHeader({
   options,
   filters,
   typeHeader,
+  breackPoint = "950px",
 }) {
   return (
-    <Header>
+    <Header $active={breackPoint}>
       <Paragraph>{title}</Paragraph>
       <Container>
-        <Filters
-          filters={filters}
-          activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
-          typeHeader={typeHeader}
-        />
-        <form>
-          <Select
-            defVal={activeSort}
-            setActiveSort={setActiveSort}
-            options={options}
+        {filters && (
+          <Filters
+            filters={filters}
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+            typeHeader={typeHeader}
           />
-        </form>
+        )}
+        {options && (
+          <form>
+            <Select
+              defVal={activeSort}
+              setActiveSort={setActiveSort}
+              options={options}
+            />
+          </form>
+        )}
       </Container>
     </Header>
   );

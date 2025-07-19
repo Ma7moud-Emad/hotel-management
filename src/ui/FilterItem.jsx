@@ -3,15 +3,15 @@ import styled from "styled-components";
 const TypeFilter = styled.li`
   cursor: pointer;
   text-transform: capitalize;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.5rem;
+  padding: 0.2rem;
+  border-radius: 0.3rem;
   transition: 0.3s;
   &:hover,
   &:focus {
     background-color: var(--color-brand-600);
-    color: white;
+    color: var(--color-gray-0);
   }
-  color: ${(props) => props.$active && "white"};
+  color: ${(props) => props.$active && "var(--color-gray-0)"};
   background-color: ${(props) => props.$active && "var(--color-brand-600)"};
   cursor: ${(props) => props.$active && "not-allowed"};
   @media (max-width: 500px) {
