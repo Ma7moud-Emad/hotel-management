@@ -90,12 +90,16 @@ export default function ChangePassword() {
         <ButtonsContainer>
           <Link to="/account">
             <Button type="reset">
-              <ButtonName>back</ButtonName>
+              <ButtonName done={false}>back</ButtonName>
             </Button>
           </Link>
 
           <Button type="submit" disabled={isChange}>
-            {isChange ? <Spinner /> : <ButtonName>change</ButtonName>}
+            {isChange ? (
+              <Spinner />
+            ) : (
+              <ButtonName done={false}>change</ButtonName>
+            )}
           </Button>
         </ButtonsContainer>
       </form>
