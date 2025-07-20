@@ -12,7 +12,7 @@ export default function SignIn() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({defaultValues:{email :"mahmoud@gmail.com", password:"mahmoud@gmail.com"}});
 
   const { isPending: isLogin, mutate: loginMutate } = useMutation({
     mutationFn: ({ email, password }) => login({ email, password }),
