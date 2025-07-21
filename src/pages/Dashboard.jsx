@@ -7,12 +7,18 @@ import Loading from "../ui/Loading";
 import formatDate from "./../utils/helpers";
 import StatisticChart from "../feateurs/dashboard/StatisticChart";
 import NightsChart from "../feateurs/dashboard/NightsChart";
+import { styled } from "styled-components";
+
+const Head4 = styled.h4`
+  text-align: center;
+  margin-top: 12rem;
+`;
 
 export default function Dashboard() {
   // Filtration methods
   const filterWays = ["last 7 days", "last 30 days", "last 90 days"];
 
-  const [flter, setFlter] = useState("last 7 days");
+  const [flter, setFlter] = useState("last 90 days");
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["bookings", flter],
@@ -71,11 +77,17 @@ export default function Dashboard() {
         breackPoint="640px"
       />
 
-      <Features values={[bookings, `${sales}$`, checkIn, `${rate}%`]} />
+      {data.length > 0 ? (
+        <>
+          <Features values={[bookings, `${sales}$`, checkIn, `${rate}%`]} />
 
-      <StatisticChart data={statisticChartData} />
+          <StatisticChart data={statisticChartData} />
 
-      <NightsChart data={nightsChartData} />
+          <NightsChart data={nightsChartData} />
+        </>
+      ) : (
+        <Head4>No bookings in the {flter}</Head4>
+      )}
     </>
   );
 }
